@@ -1,8 +1,6 @@
 //DEPENDENCIES
 const express = require("express");
-
 const transactions = express.Router();
-
 const transactionsArray = require("../models/transactions");
 
 //GET
@@ -11,7 +9,7 @@ transactions.get("/", (req, res) => {
 });
 
 transactions.get("/:index", (req, res) => {
-  const { index } = req.params;
+  const { id } = req.params;
   if (transactionsArray[index]) {
     res.status(200).json(transactionsArray[index]);
   } else {
@@ -22,8 +20,9 @@ transactions.get("/:index", (req, res) => {
 transactions.put("/:index", (req, res) => {
   const { index } = req.params;
   if (transactionsArray[index]) {
+    console.log(transactionsArray[id])
     transactionsArray[index] = req.body;
-    res.status(200).json(transactionsArray[index]);
+    res.status(200).json(transactionsArray[id]);
     // console.log(transactionsArray[index]);
   } else {
     res.status(404).json({ msg: "Transaction not found" });
@@ -32,9 +31,9 @@ transactions.put("/:index", (req, res) => {
 
 // DELETE
 transactions.delete("/:index", (req, res) => {
-  const { index } = req.params;
+  const { id } = req.params;
   if (transactionsArray[index]) {
-    const deletedTransactions = transactionsArray.splice(index, 1);
+    const deletedTransactions = transactionsArray.splice(id, 1);
     res.status(200).json(deletedTransactions);
   } else {
     res.status(404).json({ msg: "transaction not found" });
@@ -44,7 +43,7 @@ transactions.delete("/:index", (req, res) => {
 // POST
 transactions.post("/", (req, res) => {
   transactionsArray.push(req.body);
-  res.json(transactionsArray.at(-1));
+  res.status(200).json(transactionsArray.at(-1));
 });
 
 module.exports = transactions;
